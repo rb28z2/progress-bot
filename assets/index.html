@@ -61,6 +61,8 @@
 					fontFamily: '"Open Sans", Helvetica, Arial, sans-serif',
 					fontSize: '3.8vh',
 					position: 'absolute'
+					width: 100%;
+					text-align: center;
 				}
 			},
 			step: (state, bar) => { bar.setText(dispCommand + ": " + Math.round(bar.value() * 100) + '%');}
