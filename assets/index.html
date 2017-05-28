@@ -55,12 +55,12 @@
 				style: {
 					autoStyleContainer: false,
 					color: '#999',
-					fontFamily: '"Raleway", Helvetica, sans-serif',
+					fontFamily: '"Open Sans", Helvetica, Arial, sans-serif',
 					fontSize: '3.8vh',
 					position: 'absolute'
 				}
 			},
-			step: (state, bar) => { bar.setText(dispCommand + ": " + Math.round(bar.value() * 100) + ' %');}
+			step: (state, bar) => { bar.setText(dispCommand + ": " + Math.round(bar.value() * 100) + '%');}
 		});
 		stats[val["command"]].animate(val["value"]);
   }
