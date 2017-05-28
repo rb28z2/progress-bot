@@ -8,12 +8,14 @@ High-tech weaponized moe progress delivery bot for IRC and web. Uses NodeJS and 
 ##### Requirements
 * nodejs
 * npm
+* build-essential
+* libicu-dev
 
 ##### Instructions
-`npm install` to install the dependencies. Then, `mv config-default.js config.js`. Edit the config.js file to suit your needs and run the bot with `node irc.js`.
+Install `build-essential` and `libicu-dev` via your package manager, then run `npm install` to install the required dependencies. Then, copy `config-default.js` to `config.js` and edit as required. Finally, run the bot with `node irc.js`.
 
 ##### Compatibility
-In theory, this should work anywhere node works. However I've only tested it on Linux (Ubuntu 16.04).
+In theory, this should work anywhere node (and the above dependencies) works. However I've only tested it on Linux (Ubuntu 16.04).
 
 # Usage
 ##### Available commands and syntax
