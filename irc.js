@@ -28,6 +28,7 @@ console.log("Connected!".yellow);
 
 var encode = "encode",
 	title = "title",
+	tlc = "tlc",
 	episode = "episode",
 	time = "time",
 	tl = "tl",
@@ -36,7 +37,7 @@ var encode = "encode",
 	qc = "qc";
 
 
-var validCommands = ["encode", "title", "episode", "time", "tl", "ts", "edit", "qc"]
+var validCommands = ["encode", "tlc", "title", "episode", "time", "tl", "ts", "edit", "qc"]
 
 //Read progress values from file
 console.log("\nINIT COMPLETE\n".bold.magenta);
@@ -99,7 +100,7 @@ bot.addListener("message", function(from, to, text, message)
 				bot.say(config.notifyChannel[0], toSay)
 			}
 			else if (command === "episode") {
-				var toSay = "Current working on " + stats[title] + " episode " + stats[episode];
+				var toSay = "Currently working on \u0002" + stats[title] + "\u0002 episode " + stats[episode];
 				bot.say(config.notifyChannel[0], toSay)
 			}
 		}
