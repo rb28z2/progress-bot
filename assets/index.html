@@ -32,16 +32,19 @@
 
 		var dispCommand = "";
 		if (val["command"] === "tl")
-			dispCommand = "translation";
+			dispCommand = "Translation";
 		else if (val["command"] === "edit")
-			dispCommand = "editing";
+			dispCommand = "Editing";
 		else if (val["command"] === "ts")
-			dispCommand = "typesetting";
+			dispCommand = "Typesetting";
 		else if (val["command"] === "time")
-			dispCommand = "timing";
+			dispCommand = "Timing";
 		else if (val["command"] === "encode")
-			dispCommand = "encoding";
-		else dispCommand = val["command"];
+			dispCommand = "Encoding";
+		else if (val["command"] === "tlc")
+			dispCommand = "TLC";
+		else if (val["command"] === "qc")
+			dispCommand = "QC";
 
 
 
