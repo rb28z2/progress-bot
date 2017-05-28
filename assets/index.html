@@ -29,6 +29,22 @@
     if (val["command"] !== "title" && val["command"] !== "episode")
     {
 			//console.log(val["command"]);
+
+		var dispCommand = "";
+		if (val["command"] === "tl")
+			dispCommand = "translation";
+		else if (val["command"] === "edit")
+			dispCommand = "editing";
+		else if (val["command"] === "ts")
+			dispCommand = "typesetting";
+		else if (val["command"] === "time")
+			dispCommand = "timing";
+		else if (val["command"] === "encode")
+			dispCommand = "encoding";
+		else dispCommand = val["command"];
+
+
+
 		stats[val["command"]] = new ProgressBar.Line('#pb-'+val["command"], {
 			easing: 'easeInOut',
 			color: '#4286f4',
