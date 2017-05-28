@@ -145,7 +145,16 @@ io.on('connection', function(socket)
 		}
 	}
 
+	io.emit("update-users", io.engine.clientsCount);
+
+	socket.on('disconnect', function(socket)
+	{
+		io.emit("update-users", io.engine.clientsCount);
+	});
+
 });
+
+
 
 http.listen(config.port, function()
 {

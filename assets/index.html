@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
 <script src="/progressbar.min.js"></script>
 <script>
 	var socket = io();
@@ -60,10 +60,10 @@
 					color: '#999',
 					fontFamily: '"Open Sans", Helvetica, Arial, sans-serif',
 					fontSize: '3.8vh',
-					position: 'absolute'
+					position: 'absolute',
 					width: '100%',
-					text-align: 'center',
-					font-weight: '700'
+					textAlign: 'center',
+					fontWeight: '600'
 				}
 			},
 			step: (state, bar) => { bar.setText(dispCommand + ": " + Math.round(bar.value() * 100) + '%');}
@@ -99,6 +99,10 @@
 		}
 	});
 
+	socket.on("update-users", function(val) {
+		$("#totalUsers").text("Users: " + val);
+	});
+
 </script>
 
 <body>
@@ -115,7 +119,9 @@
 		  <div class="pb-div" id="pb-encode"></div>
 		  <div class="pb-div" id="pb-qc"></div>
 		</div>
+		<div id="totalUsers"></div>
 </div>
+
 
 </body>
 
