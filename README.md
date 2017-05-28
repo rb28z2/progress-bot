@@ -1,5 +1,8 @@
 # progress-bot
-High-tech weaponized moe progress delivery bot for IRC and web
+High-tech weaponized moe progress delivery bot for IRC and web. Uses NodeJS and socket.io to update progress from IRC messages onto a web interface. The web interface can also be embedded on another page to provide instant and live progress updates.
+
+# Screenshots
+![web interface](http://i.imgur.com/nKWdaGL.gif)
 
 # Installation
 ##### Requirements
@@ -26,3 +29,5 @@ In theory, this should work anywhere node works. However I've only tested it on 
 | Typesetting   | `ts <int>`         | `ts 44`                  |
 | Editing       | `edit <int>`       | `edit 0`                 |
 | Quality Check | `qc <int>`         | `qc 67`                  |
+
+Open a browser to `<ipaddress>:80` (port 80 by default) to see the live changes.
