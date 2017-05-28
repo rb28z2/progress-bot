@@ -2,7 +2,7 @@
 High-tech weaponized moe progress delivery bot for IRC and web. Uses NodeJS and socket.io to update progress from IRC messages onto a web interface. The web interface can also be embedded on another page to provide instant and live progress updates.
 
 # Screenshots
-![web interface](http://i.imgur.com/ZFmNJbT.png)
+![web interface](http://i.imgur.com/nKWdaGL.gif)
 
 # Installation
 ##### Requirements
