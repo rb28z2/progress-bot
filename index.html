@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Progress Bot</title>
+</head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="/progressbar.min.js"></script>
+<script>
+	var socket = io();
+
+	console.log("Starting");
+  var stats = {};
+  //var [encode], [title], [episode], [time], [tl], [ts], [edit], [qc];
+
+
+	/**socket.on("irc message", function(msg) {
+		console.log("NEW MESSAGE");
+		$('#messages')
+			.append($('<li>')
+				.text(msg));
+	});*/
+
+
+	socket.on("init-stats", function(val) {
+    if (stats[val["command"]] !== "title" || stats[val["command"]] !== "episode")
+    {
+		stats[val["command"]] = new ProgressBar.Line('#pb-'+val["command"], {
+			easing: 'easeInOut',
+			text: {
+				style: {
+					autoStyleContainer: true,
+					color: '#999',
+					position: 'absolute'
+				}
+			},
+			step: (state, bar) => { bar.setText(Math.round(bar.value() * 100) + ' %');}
+		});
+		stats[val["command"]].animate(val["value"]);
+  }
+  else {
+    //TODO: document.getelementbyid updatey stuff
+  }
+	});
+
+
+	socket.on("update-stats", function(val) {
+		stats[val["command"]].animate(val["value"]);
+	});
+
+</script>
+
+<body>
+	<ul id="messages"></ul>
+	<div id="pb-encode"></div>
+  <div id="pb-time"></div>
+  <div id="pb-tl"></div>
+  <div id="pb-ts"></div>
+  <div id="pb-edit"></div>
+  <div id="pb-qc"></div>
+  <div id="pb-title"></div>
+  <div id="pb-episode"></div>
+</body>
+
+</html>

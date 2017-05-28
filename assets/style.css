@@ -1,0 +1,28 @@
+#outer-container {
+    width: 95%;
+    position: absolute;
+    margin-left: 15px;
+}
+
+.pb-div {
+  font-family: "Raleway";
+  height: 12vh;
+}
+
+#pb-title {
+  font-size: 7vh;
+  position: relative;
+  font-weight: 600;
+  height: auto;
+}
+
+#pb-episode {
+  height: auto;
+  margin-bottom: 15px;
+  padding-top: 15px;
+  font-size: 3vh;
+}
+
+#inner-container{
+  margin-top: 3rem;
+}

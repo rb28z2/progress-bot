@@ -1,0 +1,11 @@
+{
+  "name": "progressBot",
+  "version": "0.0.1",
+  "description": "hi-tech weaponized moe progress delivery",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "express": "^4.15.2",
+    "irc": "^0.5.2",
+    "jsonfile": "^3.0.0"
+  }
+}
