@@ -60,7 +60,7 @@
 					position: 'absolute'
 				}
 			},
-			step: (state, bar) => { bar.setText(val["command"] + ": " + Math.round(bar.value() * 100) + ' %');}
+			step: (state, bar) => { bar.setText(dispCommand + ": " + Math.round(bar.value() * 100) + ' %');}
 		});
 		stats[val["command"]].animate(val["value"]);
   }
