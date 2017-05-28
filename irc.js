@@ -95,7 +95,7 @@ bot.addListener("message", function(from, to, text, message)
 			stats[command] = value;
 			if (command !== "title" && command !== "episode")
 			{
-				var toSay = stats[title] + " | " + stats[episode] + " | " + capitalizeFirst(command) + " progress " + stats[command] + "\%";
+				var toSay = "\u0002" + stats[title] + "\u0002 | Episode " + stats[episode] + " | " + capitalizeFirst(command) + " progress @ " + stats[command] + "\%";
 				bot.say(config.notifyChannel[0], toSay)
 			}
 			else if (command === "episode") {
@@ -184,5 +184,10 @@ process.on('uncaughtException', exitHandler.bind(null,
 
 function capitalizeFirst(string)
 {
-	return string.charAt(0).toUpperCase() + string.slice(1);
+	if (string.length > 3) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+	else {
+		return string.toUpperCase();
+	}
 }
