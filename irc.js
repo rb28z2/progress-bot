@@ -63,7 +63,8 @@ console.log("Adding listener for trigger...".green);
 /**
 * Below block is for listening to a specific trigger word.
 */
-bot.addListener("message", function(from, to, text, message)
+var listener = "message#"+config.listenChannel[0];
+bot.addListener(listener, function(from, to, text, message)
 {
 	//extract the first n characters from each message and check if it matches the trigger word
 	if (text.substring(0, config.trigger.length) === config.trigger)

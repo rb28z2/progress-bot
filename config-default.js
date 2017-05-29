@@ -1,5 +1,6 @@
 var config = {
 	channels: ["#yourchannel"],
+	listenChannel: ["#yourchannel"],
 	notifyChannel: ["#yourchannel"],
 	server: "irc.server.here",
 	botName: "progressBot",
