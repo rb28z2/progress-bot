@@ -28,6 +28,7 @@ In theory, this should work anywhere node (and the above dependencies) works. Ho
 | Encoding      | `encode <int>`     | `encode 30`              |
 | Timing        | `time <int>`       | `time 10`                |
 | Translation   | `tl <int>`         | `tl 100`                 |
+| Translation Check | `tlc <int>`    | `tlc 20`                 |
 | Typesetting   | `ts <int>`         | `ts 44`                  |
 | Editing       | `edit <int>`       | `edit 0`                 |
 | Quality Check | `qc <int>`         | `qc 67`                  |
