@@ -63,8 +63,8 @@ console.log("Adding listener for trigger...".green);
 /**
 * Below block is for listening to a specific trigger word.
 */
-var listener = "message#"+config.listenChannel[0];
-bot.addListener(listener, function(from, to, text, message)
+var listener = "message"+config.listenChannel[0];
+bot.addListener(listener, function(from, text, message)
 {
 	//extract the first n characters from each message and check if it matches the trigger word
 	if (text.substring(0, config.trigger.length) === config.trigger)
@@ -98,11 +98,18 @@ bot.addListener(listener, function(from, to, text, message)
 			if (command !== "title" && command !== "episode")
 			{
 				var toSay = "\u0002" + stats[title] + "\u0002 | Episode " + stats[episode] + " | " + capitalizeFirst(command) + " progress @ " + stats[command] + "\%";
-				bot.say(config.notifyChannel[0], toSay)
+				for (var i = 0; i < config.notifyChannel.length; i++)
+				{
+						bot.say(config.notifyChannel[i], toSay)
+				}
+
 			}
 			else if (command === "episode") {
 				var toSay = "Currently working on \u0002" + stats[title] + "\u0002 episode " + stats[episode];
-				bot.say(config.notifyChannel[0], toSay)
+				for (var i = 0; i < config.notifyChannel.length; i++)
+				{
+						bot.say(config.notifyChannel[i], toSay)
+				}
 			}
 		}
 
