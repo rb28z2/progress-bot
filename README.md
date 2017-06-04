@@ -20,17 +20,19 @@ In theory, this should work anywhere node (and the above dependencies) works. Ho
 # Usage
 ##### Available commands and syntax
 
+Assuming a trigger word of `!pb`:
+
 
 | Command       | Syntax             | Example                  |
 | ------------- | -----------------  | ------------------------ |
-| Title         | `title <string>`   | `title A very cool show` |
-| Episode       | `episode <string>` | `episode 12/25`          |
-| Encoding      | `encode <int>`     | `encode 30`              |
-| Timing        | `time <int>`       | `time 10`                |
-| Translation   | `tl <int>`         | `tl 100`                 |
-| Translation Check | `tlc <int>`    | `tlc 20`                 |
-| Typesetting   | `ts <int>`         | `ts 44`                  |
-| Editing       | `edit <int>`       | `edit 0`                 |
-| Quality Check | `qc <int>`         | `qc 67`                  |
+| Title         | `title <string>`   | `!pb title A very cool show` |
+| Episode       | `episode <string>` | `!pb episode 12/25`          |
+| Encoding      | `encode <int>`     | `!pb encode 30`              |
+| Timing        | `time <int>`       | `!pb time 10`                |
+| Translation   | `tl <int>`         | `!pb tl 100`                 |
+| Translation Check | `tlc <int>`    | `!pb tlc 20`                 |
+| Typesetting   | `ts <int>`         | `!pb ts 44`                  |
+| Editing       | `edit <int>`       | `!pb edit 0`                 |
+| Quality Check | `qc <int>`         | `!pb qc 67`                  |
 
 Open a browser to `<ipaddress>:80` (port 80 by default) to see the live changes.
