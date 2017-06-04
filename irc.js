@@ -1,4 +1,5 @@
 var config = require('./config.js');
+var fs = require('fs');
 
 //below block is to init stuff. nothing special here
 var irc = require("irc");
@@ -12,6 +13,17 @@ app.use(express.static("assets")); //deliver content in the 'assets' folder
 
 var http = require('http')
 	.Server(app);
+
+//configure in HTTPS mode
+if (config.httpsMode)
+{
+	console.log("HTTPS Mode".yellow);
+	http = require('https');
+	http = http.createServer({
+		key: fs.readFileSync(config.httpsKey),
+		cert: fs.readFileSync(config.httpsCert)
+	}, app);
+}
 
 console.log("Initializing Socket.io stuff...".green);
 var io = require('socket.io')(http); //socket.io for realtime stuff
@@ -163,12 +175,19 @@ io.on('connection', function(socket)
 });
 
 
-
-http.listen(config.port, function()
+if (config.httpsMode)
 {
-	console.log("Listening on port %s".bold.yellow, config.port);
-});
-
+	http.listen(8443, function()
+	{
+		console.log("Listening on port %s in HTTPS mode".bold.yellow, config.httpsPort);
+	});
+}
+else {
+	http.listen(config.port, function()
+	{
+		console.log("Listening on port %s in HTTP mode".bold.yellow, config.port);
+	});
+}
 //Below stuff is all for clean exits and for uncaught exception handling
 process.stdin.resume(); //so the program will not close instantly
 
