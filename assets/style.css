@@ -32,6 +32,31 @@
   text-align: right;
   font-size: x-small;
   color: grey;
+  float: right;
+}
+
+#plug {
+  width: auto;
+  height: 32px;
+  overflow: hidden;
+  color: grey;
+  float: left;
+}
+
+#plug-text {
+  margin-left: 10px;
+  display: none;
+  float: right;
+  margin-top: 6px;
+}
+
+a {
+  color: #287fb8;
+  font-size: small;
+}
+
+#plug > img {
+  opacity: 0.7;
 }
 
 body {

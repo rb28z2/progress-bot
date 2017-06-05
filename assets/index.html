@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
 <script src="/progressbar.min.js"></script>
 <script>
@@ -104,6 +105,8 @@
 		$("#totalUsers").text("Users: " + val);
 	});
 
+
+
 </script>
 
 <body>
@@ -120,10 +123,22 @@
 		  <div class="pb-div" id="pb-encode"></div>
 		  <div class="pb-div" id="pb-qc"></div>
 		</div>
-		<div id="totalUsers"></div>
+		<span id="plug"><img src="gh-light.png"><span id="plug-text"><a href="https://github.com/rb28z2/progress-bot" target="_blank">See this project on GitHub</a></span></span>
+		<span id="totalUsers"></span>
 </div>
 
 
 </body>
+<script>
+$('#plug').hover(function()
+{
+	console.log("Hover");
+	$('#plug-text').fadeIn();
+}, function()
+		{
+			$('#plug-text').stop().delay(3000).fadeOut();
+		}
+);
+</script>
 
 </html>
