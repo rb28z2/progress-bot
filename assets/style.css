@@ -47,16 +47,21 @@
   margin-left: 10px;
   display: none;
   float: right;
-  margin-top: 6px;
+  margin-top: -3px;
 }
 
 a {
   color: #287fb8;
-  font-size: small;
+  font-size: 80%;
 }
 
 #plug > img {
   opacity: 0.7;
+  width: 15px;
+}
+
+#footer {
+  margin-top: -5px;
 }
 
 body {
