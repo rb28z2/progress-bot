@@ -36,3 +36,7 @@ Assuming a trigger word of `!pb`:
 | Quality Check | `qc <int>`         | `!pb qc 67`                  |
 
 Open a browser to `<ipaddress>:80` (port 80 by default) to see the live changes.
+
+# Demo (front end only)
+
+See a live, in-production setup here: https://asenshi.moe:8443
