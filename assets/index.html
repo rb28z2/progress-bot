@@ -140,6 +140,18 @@ $('#plug').hover(function()
 			$('#plug-text').stop().delay(3000).fadeOut();
 		}
 );
+
+var original;
+
+$('#pb-qc').hover(function()
+{
+	original = $('#pb-qc > div').text();
+	$('#pb-qc > div').text("Quality Checking");
+}, function()
+	{
+		$('#pb-qc > div').text(original);
+	}
+);
 </script>
 
 </html>
