@@ -55,7 +55,17 @@ var validCommands = ["encode", "tlc", "title", "episode", "time", "tl", "ts", "e
 console.log("\nINIT COMPLETE\n".bold.magenta);
 console.log("Reading existing data...".green);
 var file = __dirname + "/data.json";
-var stats = jsonFile.readFileSync(file);
+try {
+	var stats = jsonFile.readFileSync(file);
+} catch (err) {
+	if (err.code === 'ENOENT') {
+		//If no data file was found, start with dummy data
+		console.log("No default data file found".yellow);
+		console.log("Creating dummy data".yellow);
+		stats = {"encode":0,"title":"Another show","episode":"5/12","time":"20","tl":"50","ts":0,"edit":"50","qc":"60","tlc":"20"};
+	}
+}
+		
 
 console.log(colors.grey('%s\n'), JSON.stringify(stats));
 
