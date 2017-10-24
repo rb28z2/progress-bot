@@ -28,6 +28,10 @@
   margin-top: 1.5rem;
 }
 
+svg {
+	border-radius: 5px;
+}
+
 #totalUsers {
   text-align: right;
   font-size: x-small;
