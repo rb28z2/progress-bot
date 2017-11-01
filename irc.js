@@ -101,8 +101,8 @@ bot.addListener(listener, function(from, text, message)
 		if (validCommands.indexOf(command) != -1)
 		{
 
-			//Resets all progress on a new title update
-			if (command === "title")
+			//Resets all progress on a new title or episode update
+			if ( (command === "title") or (command === "episode") )
 			{
 				console.log("Resetting everything".yellow);
 				for (var key in stats)
