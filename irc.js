@@ -102,9 +102,10 @@ bot.addListener(listener, function(from, text, message)
 		{
 
 			//Resets all progress on a new title update
-			if (command === "title")
+			if (command === "title" || command === "episode")
 			{
 				console.log("Resetting everything".yellow);
+				var tempTitle = stats["title"];
 				for (var key in stats)
 				{
 					if (stats.hasOwnProperty(key))
@@ -112,6 +113,12 @@ bot.addListener(listener, function(from, text, message)
 						stats[key] = 0;
 						io.emit("update-stats", { "command": key, "value":0});
 					}
+				}
+				if (command === "episode")
+				{	stats["title"] = tempTitle;
+					stats["episode"] = value;
+					io.emit("update-stats", { "command": "title", "value":tempTitle});
+					
 				}
 			}
 
