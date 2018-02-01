@@ -1,6 +1,18 @@
 var config = {
-	channels: ["#yourchannel"],
+	/*
+	List all channels the bot should join, include channel keys if required. 
+	ex: ["#channelA", "#channelB channelB-password", "#anotherChannel"] 
+	*/
+	channels: ["#yourchannel"], 
+	/*
+	List of channels (a subset of 'channels') that the bot should listen for commands on.
+	Note that everyone in that channel will be able to trigger commands.
+	*/
 	listenChannel: ["#yourchannel"],
+	/*
+	List of channels (a subset of 'channels') that the bot should announce updates on.
+	Bot will NOT respond to trigger commands here.
+	*/
 	notifyChannel: ["#yourchannel"],
 	server: "irc.server.here",
 	botName: "progressBot",
