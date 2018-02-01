@@ -2,166 +2,35 @@
 <html>
 
 <head>
-	<title>Progress Bot</title>
+    <title>Progress Bot</title>
 </head>
-<link rel="stylesheet" href="style.css">
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
-<script src="/progressbar.min.js"></script>
-<script>
-	var socket = io();
-
-	console.log("Starting");
-  var stats = {};
-  //var [encode], [title], [episode], [time], [tl], [ts], [edit], [qc];
-
-
-	/**socket.on("irc message", function(msg) {
-		console.log("NEW MESSAGE");
-		$('#messages')
-			.append($('<li>')
-				.text(msg));
-	});*/
-
-
-	socket.on("init-stats", function(val) {
-    if (val["command"] !== "title" && val["command"] !== "episode")
-    {
-			//console.log(val["command"]);
-
-		var dispCommand = "";
-		if (val["command"] === "tl")
-			dispCommand = "Translation";
-		else if (val["command"] === "edit")
-			dispCommand = "Editing";
-		else if (val["command"] === "ts")
-			dispCommand = "Typesetting";
-		else if (val["command"] === "time")
-			dispCommand = "Timing";
-		else if (val["command"] === "encode")
-			dispCommand = "Encoding";
-		else if (val["command"] === "tlc")
-			dispCommand = "TLC";
-		else if (val["command"] === "qc")
-			dispCommand = "QC";
-
-
-
-		stats[val["command"]] = new ProgressBar.Line('#pb-'+val["command"], {
-			easing: 'easeInOut',
-			color: '#287fb8',
-			trailColor: '#555',
-			trailWidth: 1,
-			svgStyle: {width: '100%', height: '50%'},
-			text: {
-				style: {
-					autoStyleContainer: false,
-					color: '#fff',
-					fontFamily: '"Open Sans", Helvetica, Arial, sans-serif',
-					fontSize: '3.4vh',
-					position: 'absolute',
-					width: '100%',
-					textAlign: 'center',
-					fontWeight: '600',
-					top: '0%'
-				}
-			},
-			step: (state, bar) => { bar.setText(dispCommand + ": " + Math.round(bar.value() * 100) + '%');}
-		});
-		stats[val["command"]].animate(val["value"]);
-  }
-  else {
-		console.log(val["value"]);
-		if (val["command"] === "title")
-		{
-    	$("#pb-title").text(val["value"]);
-		}
-		else {
-			$("#pb-episode").text("Episode: " + val["value"]);
-		}
-  }
-	});
-
-
-	socket.on("update-stats", function(val) {
-		if (val["command"] !== "title" && val["command"] !== "episode")
-		{
-			stats[val["command"]].animate(val["value"]/100);
-		}
-		else {
-			if (val["command"] === "title")
-			{
-	    	$("#pb-title").text(val["value"]);
-			}
-			else {
-				$("#pb-episode").text("Episode: " + val["value"]);
-			}
-		}
-	});
-
-	socket.on("update-users", function(val) {
-		$("#totalUsers").text("Users: " + val);
-	});
-
-
-
-</script>
 
 <body>
-	<div id="outer-container">
-		<ul id="messages"></ul>
-		<div class="pb-div" id="pb-title"></div>
-	  <div class="pb-div" id="pb-episode"></div>
-		<div id="inner-container">
-			<div class="pb-div" id="pb-tl"></div>
-		  <div class="pb-div" id="pb-tlc"></div>
-		  <div class="pb-div" id="pb-edit"></div>
-			<div class="pb-div" id="pb-ts"></div>
-		  <div class="pb-div" id="pb-time"></div>
-		  <div class="pb-div" id="pb-encode"></div>
-		  <div class="pb-div" id="pb-qc"></div>
-		</div>
-		<div id="footer"><span id="plug"><img src="gh-light.png"><span id="plug-text"><a href="https://github.com/rb28z2/progress-bot" target="_blank">See this project on GitHub</a></span></span>
-		<span id="totalUsers"></span>
-	</div>
-</div>
-
-
+    <div id="outer-container">
+        <ul id="messages"></ul>
+        <div class="pb-div" id="pb-title"></div>
+        <div class="pb-div" id="pb-episode"></div>
+        <div id="inner-container">
+            <div class="pb-div" id="pb-tl"></div>
+            <div class="pb-div" id="pb-tlc"></div>
+            <div class="pb-div" id="pb-edit"></div>
+            <div class="pb-div" id="pb-ts"></div>
+            <div class="pb-div" id="pb-time"></div>
+            <div class="pb-div" id="pb-encode"></div>
+            <div class="pb-div" id="pb-qc"></div>
+        </div>
+        <div id="footer"><span id="plug"><img src="gh-light.png" alt="GitHub Icon"><span id="plug-text"><a href="https://github.com/rb28z2/progress-bot" target="_blank">See this project on GitHub</a></span></span>
+            <span id="totalUsers"></span>
+        </div>
+    </div>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+    <script src="updater_functions.js"></script>
+    <script src="visual_functions.js"></script>
+    <script src="/progressbar.min.js"></script>
 </body>
-<script>
-$('#plug').hover(function()
-{
-	console.log("Hover");
-	$('#plug-text').fadeIn();
-}, function()
-		{
-			$('#plug-text').stop().delay(3000).fadeOut();
-		}
-);
-
-var original;
-
-$('#pb-qc').hover(function()
-{
-	original = $('#pb-qc > div').text();
-	$('#pb-qc > div').text("Quality Checking");
-}, function()
-	{
-		$('#pb-qc > div').text(original);
-	}
-);
-
-$('#pb-tlc').hover(function()
-{
-	original = $('#pb-tlc > div').text();
-	$('#pb-tlc > div').text("Translation Checking");
-}, function()
-	{
-		$('#pb-tlc > div').text(original);
-	}
-);
-</script>
 
 </html>
