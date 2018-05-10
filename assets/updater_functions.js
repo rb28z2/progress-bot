@@ -68,6 +68,7 @@
 		else {
 			$("#pb-episode").text("Episode: " + val["value"]);
 		}
+        $("#update").text(date.toUTCString());
   }
 	});
 
@@ -86,6 +87,8 @@
 				$("#pb-episode").text("Episode: " + val["value"]);
 			}
 		}
+        const date = new Date();
+        $("#update").text(date.toUTCString());
 	});
 
 	socket.on("update-users", function(val) {
