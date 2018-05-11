@@ -60,7 +60,6 @@
 		else {
 			$("#pb-episode").text("Episode: " + val["value"]);
 		}
-        $("#update").text(new Date().toUTCString());
   }
 	});
 
@@ -81,11 +80,13 @@
 			}
 		}
         
-        $("#update").text(new Date().toUTCString());
 	});
 
 	socket.on("update-users", function(val) {
 		$("#totalUsers").text("Users: " + val);
 	});
 
+	socket.on("date-update", function(val) {
+		$("#update").text(val);
+	});
 

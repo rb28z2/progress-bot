@@ -35,6 +35,7 @@ svg {
 .footer-text {
   font-size: x-small;
   color: grey;
+  float: right;
 }
 
 #totalUsers {
