@@ -86,6 +86,9 @@ console.log("Adding listener for trigger...".green);
 * Below block is for listening to a specific trigger word.
 */
 var listener = "message"+config.listenChannel[0];
+
+var lastUpdated = new Date().toUTCString();
+
 bot.addListener(listener, function(from, text, message)
 {
 	//extract the first n characters from each message and check if it matches the trigger word
@@ -143,6 +146,8 @@ bot.addListener(listener, function(from, text, message)
 		}
 
 		io.emit("update-stats", { "command": command, "value":value});
+		lastUpdated = new Date().toUTCString();
+		io.emit("date-update", lastUpdated);
 
 	}
 });
@@ -167,6 +172,8 @@ io.on('connection', function(socket)
 {
 	console.log("Socket connection established. ID: ".grey, socket.id);
 	socket.emit("irc message", "Connected!");
+	
+	socket.emit("date-update", lastUpdated);
 
 	//for each new client, update their stats (initial update)
 	for (var i = 0; i < validCommands.length; i++)

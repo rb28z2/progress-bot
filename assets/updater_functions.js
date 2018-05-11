@@ -5,14 +5,6 @@
   //var [encode], [title], [episode], [time], [tl], [ts], [edit], [qc];
 
 
-	/**socket.on("irc message", function(msg) {
-		console.log("NEW MESSAGE");
-		$('#messages')
-			.append($('<li>')
-				.text(msg));
-	});*/
-
-
 	socket.on("init-stats", function(val) {
     if (val["command"] !== "title" && val["command"] !== "episode")
     {
@@ -73,6 +65,7 @@
 
 
 	socket.on("update-stats", function(val) {
+		console.log("Updating");
 		if (val["command"] !== "title" && val["command"] !== "episode")
 		{
 			stats[val["command"]].animate(val["value"]/100);
@@ -86,10 +79,14 @@
 				$("#pb-episode").text("Episode: " + val["value"]);
 			}
 		}
+        
 	});
 
 	socket.on("update-users", function(val) {
 		$("#totalUsers").text("Users: " + val);
 	});
 
+	socket.on("date-update", function(val) {
+		$("#update").text(val);
+	});
 

@@ -32,10 +32,14 @@ svg {
 	border-radius: 5px;
 }
 
-#totalUsers {
-  text-align: right;
+.footer-text {
   font-size: x-small;
   color: grey;
+  float: right;
+}
+
+#totalUsers {
+  text-align: right;
   float: right;
 }
 
