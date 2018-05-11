@@ -5,7 +5,7 @@
   //var [encode], [title], [episode], [time], [tl], [ts], [edit], [qc];
 
 
-	const date = new Date();
+	//const date = new Date();
 
 	socket.on("init-stats", function(val) {
     if (val["command"] !== "title" && val["command"] !== "episode")
@@ -62,12 +62,13 @@
 		else {
 			$("#pb-episode").text("Episode: " + val["value"]);
 		}
-        $("#update").text(date.toUTCString());
+        $("#update").text(new Date().toUTCString());
   }
 	});
 
 
 	socket.on("update-stats", function(val) {
+		console.log("Updating");
 		if (val["command"] !== "title" && val["command"] !== "episode")
 		{
 			stats[val["command"]].animate(val["value"]/100);
@@ -82,7 +83,7 @@
 			}
 		}
         
-        $("#update").text(date.toUTCString());
+        $("#update").text(new Date().toUTCString());
 	});
 
 	socket.on("update-users", function(val) {
