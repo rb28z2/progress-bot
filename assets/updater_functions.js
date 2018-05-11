@@ -5,13 +5,7 @@
   //var [encode], [title], [episode], [time], [tl], [ts], [edit], [qc];
 
 
-	/**socket.on("irc message", function(msg) {
-		console.log("NEW MESSAGE");
-		$('#messages')
-			.append($('<li>')
-				.text(msg));
-	});*/
-
+	const date = new Date();
 
 	socket.on("init-stats", function(val) {
     if (val["command"] !== "title" && val["command"] !== "episode")
@@ -87,7 +81,7 @@
 				$("#pb-episode").text("Episode: " + val["value"]);
 			}
 		}
-        const date = new Date();
+        
         $("#update").text(date.toUTCString());
 	});
 
