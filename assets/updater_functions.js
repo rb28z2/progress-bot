@@ -5,8 +5,6 @@
   //var [encode], [title], [episode], [time], [tl], [ts], [edit], [qc];
 
 
-	//const date = new Date();
-
 	socket.on("init-stats", function(val) {
     if (val["command"] !== "title" && val["command"] !== "episode")
     {
