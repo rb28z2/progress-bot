@@ -21,7 +21,11 @@ var config = {
 	httpsPort: 8443,
 	httpsKey: '/path/to/key.pem', //port, key, and cert not required in http mode
 	httpsCert: '/path/to/cert.pem',
-  trigger: "!pb " //Word to trigger actions. IMPORTANT: INCLUDE A TRAILING SPACE
+	trigger: "!pb ", //Word to trigger actions. IMPORTANT: INCLUDE A TRAILING SPACE
+	identify: false, //Set to true to enable nickserv identification
+	nick_secret: false, //set to a "" enclosed password if you dont want to enter it every time
+			// else leave false to prompt for a password
+	nickserv: "nickserv" //nick identification service's name
 };
 
 module.exports = config;

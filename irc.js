@@ -38,6 +38,8 @@ var bot = new irc.Client(config.server, config.botName,
 });
 console.log("Connected!".yellow);
 
+authorize();
+
 var encode = "encode",
 	title = "title",
 	tlc = "tlc",
@@ -250,5 +252,27 @@ function capitalizeFirst(string)
 	}
 	else {
 		return string.toUpperCase();
+	}
+}
+
+async function authorize()
+{
+	if (config.identify)
+	{
+	        console.log("Identify nick enabled".yellow);
+	        if (config.nick_secret)
+        	{
+                	console.log("Password found".green);
+	                let password = config.nick_secret;
+	                bot.say(config.nickserv, "identify " + password);
+        	}
+	        else
+	        {
+        	        console.log("Prompting for password".yellow);
+	                let pass_prompt = require('password-prompt');
+        	        let password = await pass_prompt('ENTER PASSWORD AT ANY TIME');
+                	bot.say(config.nickserv, "identify " + password);
+	        }
+        	console.log("Identified".green); //todo: check if identify was successful
 	}
 }
