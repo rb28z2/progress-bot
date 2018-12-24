@@ -1,26 +1,23 @@
+import jsonFile from "jsonfile";
+let ioInstance;
+let stats;
 
-var config = require("./config.js");
-var jsonFile = require("jsonfile");
-var io;
-var stats;
+export function initIo(http) {
+	ioInstance = require("socket.io")(http);
+	return ioInstance;
+}
 
-exports.initIo = function(http) {
-	io = require("socket.io")(http);
-	return io;
-};
+export function io() {
+	return ioInstance;
+}
 
-exports.io = function() {
-	return io;
-};
+export var lastUpdated = new Date().toUTCString();
+export var validCommands = ["encode", "tlc", "title", "episode", "time", "tl", "ts", "edit", "qc"];
 
-exports.lastUpdated = new Date().toUTCString();
-
-exports.validCommands =	["encode", "tlc", "title", "episode", "time", "tl", "ts", "edit", "qc"];
-
-exports.stats = function() {
+export function getStats() {
 	if (!stats){
 		console.log("Reading existing data...".green);
-		var file = __dirname + "/data.json";
+		const file = `${__dirname}/data.json`;
 		try {
 			stats = jsonFile.readFileSync(file);
 		}
@@ -44,6 +41,6 @@ exports.stats = function() {
 		}
 	}
 	return stats;
-};
+}
 
-exports.file = __dirname + "/data.json";
+export var file = `${__dirname}/data.json`;
