@@ -9,5 +9,8 @@
     "jsonfile": "^5.0.0",
     "password-prompt": "^1.0.7",
     "socket.io": "^2.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.11.0"
   }
 }
