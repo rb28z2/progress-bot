@@ -1,4 +1,5 @@
 var config = {
+	enableIrc: true,
 	/*
 	List all channels the bot should join, include channel keys if required. 
 	ex: ["#channelA", "#channelB channelB-password", "#anotherChannel"] 
@@ -16,16 +17,18 @@ var config = {
 	notifyChannel: ["#yourchannel"],
 	server: "irc.server.here",
 	botName: "progressBot",
-  port: 80,
+	port: 80,
 	httpsMode: false, //enables https only mode
 	httpsPort: 8443,
-	httpsKey: '/path/to/key.pem', //port, key, and cert not required in http mode
-	httpsCert: '/path/to/cert.pem',
+	httpsKey: "/path/to/key.pem", //port, key, and cert not required in http mode
+	httpsCert: "/path/to/cert.pem",
 	trigger: "!pb ", //Word to trigger actions. IMPORTANT: INCLUDE A TRAILING SPACE
 	identify: false, //Set to true to enable nickserv identification
 	nick_secret: false, //set to a "" enclosed password if you dont want to enter it every time
-			// else leave false to prompt for a password
-	nickserv: "nickserv" //nick identification service's name
+	// else leave false to prompt for a password
+	nickserv: "nickserv", //nick identification service's name
+	enableDiscord: false,
+	discordKey: "yourkeyhere" // your discord bot token
 };
 
 module.exports = config;

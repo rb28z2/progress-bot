@@ -34,8 +34,15 @@ var io = common.initIo(http); // socket.io for realtime stuff
 
 let jsonFile = require("jsonfile"); //because i'm lazy
 
-let ircClient = require("./irc.js");
-ircClient.initIRC();
+if (config.enableIrc) {
+	let ircClient = require("./irc.js");
+	ircClient.initIRC();
+}
+
+if (config.enableDiscord) {
+	let discordClient = require("./discord.js");
+	discordClient.initDiscord();
+}
 
 console.log("\nINIT COMPLETE\n".bold.magenta);
 
