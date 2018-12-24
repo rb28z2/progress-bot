@@ -1,9 +1,9 @@
 import irc from "irc";
 import config from "./config.js";
-import common from "./common.js";
+import { io as _io, getStats, validCommands} from "./common.js";
 
-const io = common.io();
-const stats = common.stats();
+const io = _io();
+const stats = getStats();
 
 export function initIRC() {
 	const encode = "encode";
@@ -42,7 +42,7 @@ export function initIRC() {
 			const value = msg.substring(msg.indexOf(" ") + 1);
 	
 	
-			if (common.validCommands.includes(command)) {
+			if (validCommands.includes(command)) {
 	
 				//Resets all progress on a new title update
 				if (command === "title" || command === "episode") {

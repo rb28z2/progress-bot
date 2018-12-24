@@ -13,8 +13,8 @@ app.use(express.static("assets")); //deliver content in the 'assets' folder
 let http = require("http")
 	.Server(app);
 
-import common from "./common.js";
-let stats = common.stats();
+import {getStats, initIo, lastUpdated, validCommands, file } from "./common.js";
+let stats = getStats();
 
 
 //configure in HTTPS mode
@@ -29,7 +29,7 @@ if (config.httpsMode) {
 
 console.log("Initializing Socket.io stuff...".green);
 
-const io = common.initIo(http); // socket.io for realtime stuff
+const io = initIo(http); // socket.io for realtime stuff
 
 
 import jsonFile from "jsonfile"; //because i'm lazy
@@ -61,24 +61,24 @@ io.on("connection", socket => {
 	console.log("Socket connection established. ID: ".grey, socket.id);
 	socket.emit("irc message", "Connected!");
 
-	socket.emit("date-update", common.lastUpdated);
+	socket.emit("date-update", lastUpdated);
 
 	
 
 	//for each new client, update their stats (initial update)
-	for (let i = 0; i < common.validCommands.length; i++) {
-		let command = common.validCommands[i];
+	for (let i = 0; i < validCommands.length; i++) {
+		let command = validCommands[i];
 		//console.log(command);
 		if (command !== "title" && command !== "episode") {
 			socket.emit("init-stats", {
-				"command": common.validCommands[i],
-				"value": stats[common.validCommands[i]] / 100
+				"command": validCommands[i],
+				"value": stats[validCommands[i]] / 100
 			});
 		}
 		else {
 			socket.emit("init-stats", {
-				"command": common.validCommands[i],
-				"value": stats[common.validCommands[i]]
+				"command": validCommands[i],
+				"value": stats[validCommands[i]]
 			});
 		}
 	}
@@ -109,7 +109,7 @@ function exitHandler({cleanup, exit}, err) {
 	if (cleanup) console.log("clean".red);
 	if (err) console.log(err.stack);
 
-	jsonFile.writeFileSync(common.file, stats);
+	jsonFile.writeFileSync(file, stats);
 	console.log("Saving stats to disk".yellow);
 
 	if (exit) process.exit();
