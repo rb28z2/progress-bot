@@ -1,10 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-const colors = require("colors");
-const Discord = require("discord.js");
-const client = new Discord.Client();
-const config = require("./config.js");
+import colors from "colors";
 
-exports.initDiscord = function() {
+import Discord from "discord.js";
+const client = new Discord.Client();
+import config from "./config.js";
+
+export function initDiscord() {
 	client.on("ready", () => {
 		console.log(`Logged in as ${client.user.tag}`.yellow);
 	});
@@ -16,4 +17,4 @@ exports.initDiscord = function() {
 	});
 
 	client.login(config.discordKey);
-};
+}

@@ -1,4 +1,4 @@
-var config = {
+const config = {
 	enableIrc: true,
 	/*
 	List all channels the bot should join, include channel keys if required. 
@@ -31,4 +31,4 @@ var config = {
 	discordKey: "yourkeyhere" // your discord bot token
 };
 
-module.exports = config;
+export default config;

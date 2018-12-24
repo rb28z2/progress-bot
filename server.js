@@ -1,11 +1,11 @@
-let config = require("./config.js");
-let fs = require("fs");
+import config from "./config.js";
+import fs from "fs";
 
 //below block is to init stuff. nothing special here
-let colors = require("colors");
+import colors from "colors";
 
 console.log("Initializing Express and HTTP stuff...".green);
-let express = require("express");
+import express from "express";
 
 const app = express();
 app.use(express.static("assets")); //deliver content in the 'assets' folder
@@ -13,7 +13,7 @@ app.use(express.static("assets")); //deliver content in the 'assets' folder
 let http = require("http")
 	.Server(app);
 
-let common = require("./common.js");
+import common from "./common.js";
 let stats = common.stats();
 
 
@@ -29,10 +29,10 @@ if (config.httpsMode) {
 
 console.log("Initializing Socket.io stuff...".green);
 
-var io = common.initIo(http); // socket.io for realtime stuff
+const io = common.initIo(http); // socket.io for realtime stuff
 
 
-let jsonFile = require("jsonfile"); //because i'm lazy
+import jsonFile from "jsonfile"; //because i'm lazy
 
 if (config.enableIrc) {
 	let ircClient = require("./irc.js");
@@ -49,15 +49,15 @@ console.log("\nINIT COMPLETE\n".bold.magenta);
 console.log(colors.grey("%s\n"), JSON.stringify(stats));
 
 
-app.get("/", function (req, res) {
-	res.sendFile(__dirname + "/index.html");
+app.get("/", (req, res) => {
+	res.sendFile(`${__dirname}/index.html`);
 });
 
-app.get("/progressbar.min.js", function (req, res) {
-	res.sendFile(__dirname + "/progressbar.min.js");
+app.get("/progressbar.min.js", (req, res) => {
+	res.sendFile(`${__dirname}/progressbar.min.js`);
 });
 
-io.on("connection", function (socket) {
+io.on("connection", socket => {
 	console.log("Socket connection established. ID: ".grey, socket.id);
 	socket.emit("irc message", "Connected!");
 
@@ -85,7 +85,7 @@ io.on("connection", function (socket) {
 
 	io.emit("update-users", io.engine.clientsCount);
 
-	socket.on("disconnect", function (socket) {
+	socket.on("disconnect", socket => {
 		io.emit("update-users", io.engine.clientsCount);
 	});
 
@@ -93,26 +93,26 @@ io.on("connection", function (socket) {
 
 
 if (config.httpsMode) {
-	http.listen(8443, function () {
+	http.listen(8443, () => {
 		console.log("Listening on port %s in HTTPS mode".bold.yellow, config.httpsPort);
 	});
 }
 else {
-	http.listen(config.port, function () {
+	http.listen(config.port, () => {
 		console.log("Listening on port %s in HTTP mode".bold.yellow, config.port);
 	});
 }
 //Below stuff is all for clean exits and for uncaught exception handling
 process.stdin.resume(); //so the program will not close instantly
 
-function exitHandler(options, err) {
-	if (options.cleanup) console.log("clean".red);
+function exitHandler({cleanup, exit}, err) {
+	if (cleanup) console.log("clean".red);
 	if (err) console.log(err.stack);
 
 	jsonFile.writeFileSync(common.file, stats);
 	console.log("Saving stats to disk".yellow);
 
-	if (options.exit) process.exit();
+	if (exit) process.exit();
 }
 
 //do something when app is closing

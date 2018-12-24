@@ -1,56 +1,54 @@
-var irc = require("irc");
-var config = require("./config.js");
-var fs = require("fs");
-var common = require("./common.js");
+import irc from "irc";
+import config from "./config.js";
+import common from "./common.js";
 
-var io = common.io();
-var stats = common.stats();
+const io = common.io();
+const stats = common.stats();
 
-exports.initIRC = function() {
-	
-	var encode = "encode",
-		title = "title",
-		tlc = "tlc",
-		episode = "episode",
-		time = "time",
-		tl = "tl",
-		ts = "ts",
-		edit = "edit",
-		qc = "qc";
-	
+export function initIRC() {
+	const encode = "encode";
+	const title = "title";
+	const tlc = "tlc";
+	const episode = "episode";
+	const time = "time";
+	const tl = "tl";
+	const ts = "ts";
+	const edit = "edit";
+	const qc = "qc";
+
 	console.log("Connecting to IRC...".green);
-	var bot = new irc.Client(config.server, config.botName, {
+	const bot = new irc.Client(config.server, config.botName, {
 		channels: config.channels
 	});
 	console.log("Connected!".yellow);
-	
+
 	authorize();
 
 	let lastUpdated = exports.lastUpdated;
 
-	var listener = "message" + config.listenChannel[0];
+	const listener = `message${config.listenChannel[0]}`;
 
 	console.log("Adding listener for trigger...".green);
 	/**
 	 * Below block is for listening to a specific trigger word.
 	 */
-	bot.addListener(listener, function (from, text, message) {
+	bot.addListener(listener, (from, text, message) => {
 		//extract the first n characters from each message and check if it matches the trigger word
 		if (text.substring(0, config.trigger.length) === config.trigger) {
-			var msg = text.substring(config.trigger.length);
+			const msg = text.substring(config.trigger.length);
 			console.log("Message Received: ", msg);
 			//if we have a matching trigger, extract the command the value
-			var command = msg.substring(0, msg.indexOf(" "));
-			var value = msg.substring(msg.indexOf(" ") + 1);
+			const command = msg.substring(0, msg.indexOf(" "));
+			const value = msg.substring(msg.indexOf(" ") + 1);
 	
 	
-			if (common.validCommands.indexOf(command) != -1) {
+			if (common.validCommands.includes(command)) {
 	
 				//Resets all progress on a new title update
 				if (command === "title" || command === "episode") {
 					console.log("Resetting everything".yellow);
-					var tempTitle = stats["title"];
-					for (var key in stats) {
+					const tempTitle = stats["title"];
+					for (const key in stats) {
 						if (stats.hasOwnProperty(key)) {
 							stats[key] = 0;
 							io.emit("update-stats", {
@@ -73,14 +71,14 @@ exports.initIRC = function() {
 				console.log("Valid command: ".yellow, command, value);
 				stats[command] = value;
 				if (command !== "title" && command !== "episode") {
-					let toSay = "\u0002" + stats[title] + "\u0002 | Episode " + stats[episode] + " | " + capitalizeFirst(command) + " progress @ " + stats[command] + "%";
+					let toSay = `\u0002${stats[title]}\u0002 | Episode ${stats[episode]} | ${capitalizeFirst(command)} progress @ ${stats[command]}%`;
 					for (let i = 0; i < config.notifyChannel.length; i++) {
 						bot.say(config.notifyChannel[i], toSay);
 					}
 	
 				}
 				else if (command === "episode") {
-					let toSay = "Currently working on \u0002" + stats[title] + "\u0002 episode " + stats[episode];
+					let toSay = `Currently working on \u0002${stats[title]}\u0002 episode ${stats[episode]}`;
 					for (let i = 0; i < config.notifyChannel.length; i++) {
 						bot.say(config.notifyChannel[i], toSay);
 					}
@@ -96,8 +94,8 @@ exports.initIRC = function() {
 	
 		}
 	});
-	
-	bot.addListener("error", function (message) {
+
+	bot.addListener("error", message => {
 		console.log("IRC Error ".red, message);
 	});
 
@@ -116,15 +114,15 @@ exports.initIRC = function() {
 			if (config.nick_secret) {
 				console.log("Password found".green);
 				let password = config.nick_secret;
-				bot.say(config.nickserv, "identify " + password);
+				bot.say(config.nickserv, `identify ${password}`);
 			}
 			else {
 				console.log("Prompting for password".yellow);
 				let pass_prompt = require("password-prompt");
 				let password = await pass_prompt("ENTER PASSWORD AT ANY TIME");
-				bot.say(config.nickserv, "identify " + password);
+				bot.say(config.nickserv, `identify ${password}`);
 			}
 			console.log("Identified".green); //todo: check if identify was successful
 		}
 	}
-};
+}
