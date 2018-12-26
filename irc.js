@@ -1,278 +1,96 @@
-var config = require('./config.js');
-var fs = require('fs');
+import irc from "irc";
+import config from "./config.js";
+import { io as _io, getStats, validCommands, getCommand, getValue, triggerMatch, getMsg, newTitleTrigger, getIRCtoSay, getDiscordtoSay} from "./common.js";
+import { discordSay } from "./discord.js";
 
-//below block is to init stuff. nothing special here
-var irc = require("irc");
-var colors = require("colors");
+const io = _io();
+const stats = getStats();
+let bot;
 
-console.log("Initializing Express and HTTP stuff...".green);
-var express = require('express');
+export function initIRC() {
+	console.log("Connecting to IRC...".green);
+	bot = new irc.Client(config.server, config.botName, {
+		channels: config.channels
+	});
+	console.log("Connected!".yellow);
 
-const app = express();
-app.use(express.static("assets")); //deliver content in the 'assets' folder
+	authorize();
 
-var http = require('http')
-	.Server(app);
+	let lastUpdated = exports.lastUpdated;
 
-//configure in HTTPS mode
-if (config.httpsMode)
-{
-	console.log("HTTPS Mode".yellow);
-	http = require('https');
-	http = http.createServer({
-		key: fs.readFileSync(config.httpsKey),
-		cert: fs.readFileSync(config.httpsCert)
-	}, app);
-}
+	const listener = `message${config.listenChannel[0]}`;
 
-console.log("Initializing Socket.io stuff...".green);
-var io = require('socket.io')(http); //socket.io for realtime stuff
-
-
-var jsonFile = require('jsonfile'); //because i'm lazy
-
-console.log("Connecting to IRC...".green);
-var bot = new irc.Client(config.server, config.botName,
-{
-	channels: config.channels
-});
-console.log("Connected!".yellow);
-
-authorize();
-
-var encode = "encode",
-	title = "title",
-	tlc = "tlc",
-	episode = "episode",
-	time = "time",
-	tl = "tl",
-	ts = "ts",
-	edit = "edit",
-	qc = "qc";
-
-
-var validCommands = ["encode", "tlc", "title", "episode", "time", "tl", "ts", "edit", "qc"]
-
-//Read progress values from file
-console.log("\nINIT COMPLETE\n".bold.magenta);
-console.log("Reading existing data...".green);
-var file = __dirname + "/data.json";
-try {
-	var stats = jsonFile.readFileSync(file);
-} catch (err) {
-	if (err.code === 'ENOENT') {
-		//If no data file was found, start with dummy data
-		console.log("No default data file found".yellow);
-		console.log("Creating dummy data".yellow);
-		stats = {"encode":0,"title":"Another show","episode":"5/12","time":"20","tl":"50","ts":0,"edit":"50","qc":"60","tlc":"20"};
-	}
-}
-		
-
-console.log(colors.grey('%s\n'), JSON.stringify(stats));
-
-/**var stats = {
-	encode: file["encode"],
-	title: file["title"],
-	episode: file["episode"],
-	time: file["time"],
-	tl: file["tl"],
-	ts: file["ts"],
-	edit: file["edit"],
-	qc: file["qc"]
-};*/
-
-
-console.log("Adding listener for trigger...".green);
-/**
-* Below block is for listening to a specific trigger word.
-*/
-var listener = "message"+config.listenChannel[0];
-
-var lastUpdated = new Date().toUTCString();
-
-bot.addListener(listener, function(from, text, message)
-{
-	//extract the first n characters from each message and check if it matches the trigger word
-	if (text.substring(0, config.trigger.length) === config.trigger)
-	{
-		var msg = text.substring(config.trigger.length);
-		console.log("Message Received: ", msg);
-		//if we have a matching trigger, extract the command the value
-		var command = msg.substring(0, msg.indexOf(" "));
-		var value = msg.substring(msg.indexOf(" ") + 1);
-
-
-		if (validCommands.indexOf(command) != -1)
-		{
-
-			//Resets all progress on a new title update
-			if (command === "title" || command === "episode")
-			{
-				console.log("Resetting everything".yellow);
-				var tempTitle = stats["title"];
-				for (var key in stats)
-				{
-					if (stats.hasOwnProperty(key))
-					{
-						stats[key] = 0;
-						io.emit("update-stats", { "command": key, "value":0});
+	console.log("Adding listener for trigger...".green);
+	/**
+	 * Below block is for listening to a specific trigger word.
+	 */
+	bot.addListener(listener, (from, text, message) => {
+		//extract the first n characters from each message and check if it matches the trigger word
+		if (triggerMatch(text)) {
+			const msg = getMsg(text);
+			console.log("Message Received: ", msg);
+			//if we have a matching trigger, extract the command the value
+			const command = getCommand(msg);
+			const value = getValue(msg);
+	
+	
+			if (validCommands.includes(command)) {
+	
+				newTitleTrigger(command, value);
+				console.log("Valid command: ".yellow, command, value);
+				stats[command] = value;
+				
+				let ircMessage = getIRCtoSay(command);
+				let discordMessage = getDiscordtoSay(command);
+				
+				if (ircMessage){
+					for (let i = 0; i < config.notifyChannel.length; i++) {
+						bot.say(config.notifyChannel[i], ircMessage);
 					}
 				}
-				if (command === "episode")
-				{	stats["title"] = tempTitle;
-					stats["episode"] = value;
-					io.emit("update-stats", { "command": "title", "value":tempTitle});
-					
-				}
+
+				discordSay(discordMessage);
 			}
-
-			console.log("Valid command: ".yellow, command, value);
-			stats[command] = value;
-			if (command !== "title" && command !== "episode")
-			{
-				var toSay = "\u0002" + stats[title] + "\u0002 | Episode " + stats[episode] + " | " + capitalizeFirst(command) + " progress @ " + stats[command] + "\%";
-				for (var i = 0; i < config.notifyChannel.length; i++)
-				{
-						bot.say(config.notifyChannel[i], toSay)
-				}
-
-			}
-			else if (command === "episode") {
-				var toSay = "Currently working on \u0002" + stats[title] + "\u0002 episode " + stats[episode];
-				for (var i = 0; i < config.notifyChannel.length; i++)
-				{
-						bot.say(config.notifyChannel[i], toSay)
-				}
-			}
-		}
-
-		io.emit("update-stats", { "command": command, "value":value});
-		lastUpdated = new Date().toUTCString();
-		io.emit("date-update", lastUpdated);
-
-	}
-});
-
-bot.addListener("error", function(message)
-{
-	console.log("IRC Error ".red, message);
-});
-
-
-app.get('/', function(req, res)
-{
-	res.sendFile(__dirname + "/index.html");
-});
-
-app.get('/progressbar.min.js', function(req, res)
-{
-	res.sendFile(__dirname + "/progressbar.min.js");
-});
-
-io.on('connection', function(socket)
-{
-	console.log("Socket connection established. ID: ".grey, socket.id);
-	socket.emit("irc message", "Connected!");
 	
-	socket.emit("date-update", lastUpdated);
-
-	//for each new client, update their stats (initial update)
-	for (var i = 0; i < validCommands.length; i++)
-	{
-		var command = validCommands[i];
-		//console.log(command);
-		if (command !== "title" && command !== "episode")
-		{
-			socket.emit("init-stats", { "command": validCommands[i], "value": stats[validCommands[i]] / 100});
+			io.emit("update-stats", {
+				"command": command,
+				"value": value
+			});
+			lastUpdated = new Date().toUTCString();
+			io.emit("date-update", lastUpdated);
+	
 		}
-		else {
-			socket.emit("init-stats", { "command": validCommands[i], "value": stats[validCommands[i]]});
+	});
+
+	bot.addListener("error", message => {
+		console.log("IRC Error ".red, message);
+	});
+
+	
+
+	async function authorize() {
+		if (config.identify) {
+			console.log("Identify nick enabled".yellow);
+			if (config.nick_secret) {
+				console.log("Password found".green);
+				let password = config.nick_secret;
+				bot.say(config.nickserv, `identify ${password}`);
+			}
+			else {
+				console.log("Prompting for password".yellow);
+				let pass_prompt = require("password-prompt");
+				let password = await pass_prompt("ENTER PASSWORD AT ANY TIME");
+				bot.say(config.nickserv, `identify ${password}`);
+			}
+			console.log("Identified".green); //todo: check if identify was successful
 		}
 	}
-
-	io.emit("update-users", io.engine.clientsCount);
-
-	socket.on('disconnect', function(socket)
-	{
-		io.emit("update-users", io.engine.clientsCount);
-	});
-
-});
-
-
-if (config.httpsMode)
-{
-	http.listen(8443, function()
-	{
-		console.log("Listening on port %s in HTTPS mode".bold.yellow, config.httpsPort);
-	});
-}
-else {
-	http.listen(config.port, function()
-	{
-		console.log("Listening on port %s in HTTP mode".bold.yellow, config.port);
-	});
-}
-//Below stuff is all for clean exits and for uncaught exception handling
-process.stdin.resume(); //so the program will not close instantly
-
-function exitHandler(options, err)
-{
-	if (options.cleanup) console.log('clean'.red);
-	if (err) console.log(err.stack);
-
-	jsonFile.writeFileSync(file, stats);
-
-	if (options.exit) process.exit();
 }
 
-//do something when app is closing
-process.on('exit', exitHandler.bind(null,
-{
-	cleanup: true
-}));
-
-//catches ctrl+c event
-process.on('SIGINT', exitHandler.bind(null,
-{
-	exit: true
-}));
-
-//catches uncaught exceptions
-process.on('uncaughtException', exitHandler.bind(null,
-{
-	exit: true
-}));
-
-function capitalizeFirst(string)
-{
-	if (string.length > 3) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	}
-	else {
-		return string.toUpperCase();
-	}
-}
-
-async function authorize()
-{
-	if (config.identify)
-	{
-	        console.log("Identify nick enabled".yellow);
-	        if (config.nick_secret)
-        	{
-                	console.log("Password found".green);
-	                let password = config.nick_secret;
-	                bot.say(config.nickserv, "identify " + password);
-        	}
-	        else
-	        {
-        	        console.log("Prompting for password".yellow);
-	                let pass_prompt = require('password-prompt');
-        	        let password = await pass_prompt('ENTER PASSWORD AT ANY TIME');
-                	bot.say(config.nickserv, "identify " + password);
-	        }
-        	console.log("Identified".green); //todo: check if identify was successful
+export function ircSay(message) {
+	if (message){
+		for (let i = 0; i < config.notifyChannel.length; i++) {
+			bot.say(config.notifyChannel[i], message);
+		}
 	}
 }
