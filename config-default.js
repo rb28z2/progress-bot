@@ -27,8 +27,11 @@ const config = {
 	nick_secret: false, //set to a "" enclosed password if you dont want to enter it every time
 	// else leave false to prompt for a password
 	nickserv: "nickserv", //nick identification service's name
+	
+	
 	enableDiscord: false,
-	discordKey: "yourkeyhere" // your discord bot token
+	discordKey: "yourkeyhere", // your discord bot token
+	discordNotifyChannels: ["someid"] // comma separated numerical notify channel id
 };
 
 export default config;

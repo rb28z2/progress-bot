@@ -1,13 +1,15 @@
 import irc from "irc";
 import config from "./config.js";
-import { io as _io, getStats, validCommands, getCommand, getValue, triggerMatch, getMsg, newTitleTrigger, getIRCtoSay} from "./common.js";
+import { io as _io, getStats, validCommands, getCommand, getValue, triggerMatch, getMsg, newTitleTrigger, getIRCtoSay, getDiscordtoSay} from "./common.js";
+import { discordSay } from "./discord.js";
 
 const io = _io();
 const stats = getStats();
+let bot;
 
 export function initIRC() {
 	console.log("Connecting to IRC...".green);
-	const bot = new irc.Client(config.server, config.botName, {
+	bot = new irc.Client(config.server, config.botName, {
 		channels: config.channels
 	});
 	console.log("Connected!".yellow);
@@ -38,13 +40,16 @@ export function initIRC() {
 				console.log("Valid command: ".yellow, command, value);
 				stats[command] = value;
 				
-				let toSay = getIRCtoSay(command);
+				let ircMessage = getIRCtoSay(command);
+				let discordMessage = getDiscordtoSay(command);
 				
-				if (toSay){
+				if (ircMessage){
 					for (let i = 0; i < config.notifyChannel.length; i++) {
-						bot.say(config.notifyChannel[i], toSay);
+						bot.say(config.notifyChannel[i], ircMessage);
 					}
 				}
+
+				discordSay(discordMessage);
 			}
 	
 			io.emit("update-stats", {
@@ -78,6 +83,14 @@ export function initIRC() {
 				bot.say(config.nickserv, `identify ${password}`);
 			}
 			console.log("Identified".green); //todo: check if identify was successful
+		}
+	}
+}
+
+export function ircSay(message) {
+	if (message){
+		for (let i = 0; i < config.notifyChannel.length; i++) {
+			bot.say(config.notifyChannel[i], message);
 		}
 	}
 }

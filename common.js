@@ -106,6 +106,16 @@ export function getIRCtoSay(command) {
 	else return null;
 }
 
+export function getDiscordtoSay(command) {
+	if (command === "episode") {
+		return `Currently working on **${stats[title]}** episode ${stats[episode]}`;
+	}
+	else if (command !== "title") {
+		return `**${stats[title]}** | Episode ${stats[episode]} | ${capitalizeFirst(command)} progress @ ${stats[command]}%`;
+	}
+	else return null;
+}
+
 function capitalizeFirst(string) {
 	if (string.length > 3) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
