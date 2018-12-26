@@ -1,21 +1,11 @@
 import irc from "irc";
 import config from "./config.js";
-import { io as _io, getStats, validCommands} from "./common.js";
+import { io as _io, getStats, validCommands, getCommand, getValue, triggerMatch, getMsg, newTitleTrigger, getIRCtoSay} from "./common.js";
 
 const io = _io();
 const stats = getStats();
 
 export function initIRC() {
-	const encode = "encode";
-	const title = "title";
-	const tlc = "tlc";
-	const episode = "episode";
-	const time = "time";
-	const tl = "tl";
-	const ts = "ts";
-	const edit = "edit";
-	const qc = "qc";
-
 	console.log("Connecting to IRC...".green);
 	const bot = new irc.Client(config.server, config.botName, {
 		channels: config.channels
@@ -34,51 +24,23 @@ export function initIRC() {
 	 */
 	bot.addListener(listener, (from, text, message) => {
 		//extract the first n characters from each message and check if it matches the trigger word
-		if (text.substring(0, config.trigger.length) === config.trigger) {
-			const msg = text.substring(config.trigger.length);
+		if (triggerMatch(text)) {
+			const msg = getMsg(text);
 			console.log("Message Received: ", msg);
 			//if we have a matching trigger, extract the command the value
-			const command = msg.substring(0, msg.indexOf(" "));
-			const value = msg.substring(msg.indexOf(" ") + 1);
+			const command = getCommand(msg);
+			const value = getValue(msg);
 	
 	
 			if (validCommands.includes(command)) {
 	
-				//Resets all progress on a new title update
-				if (command === "title" || command === "episode") {
-					console.log("Resetting everything".yellow);
-					const tempTitle = stats["title"];
-					for (const key in stats) {
-						if (stats.hasOwnProperty(key)) {
-							stats[key] = 0;
-							io.emit("update-stats", {
-								"command": key,
-								"value": 0
-							});
-						}
-					}
-					if (command === "episode") {
-						stats["title"] = tempTitle;
-						stats["episode"] = value;
-						io.emit("update-stats", {
-							"command": "title",
-							"value": tempTitle
-						});
-	
-					}
-				}
-	
+				newTitleTrigger(command, value);
 				console.log("Valid command: ".yellow, command, value);
 				stats[command] = value;
-				if (command !== "title" && command !== "episode") {
-					let toSay = `\u0002${stats[title]}\u0002 | Episode ${stats[episode]} | ${capitalizeFirst(command)} progress @ ${stats[command]}%`;
-					for (let i = 0; i < config.notifyChannel.length; i++) {
-						bot.say(config.notifyChannel[i], toSay);
-					}
-	
-				}
-				else if (command === "episode") {
-					let toSay = `Currently working on \u0002${stats[title]}\u0002 episode ${stats[episode]}`;
+				
+				let toSay = getIRCtoSay(command);
+				
+				if (toSay){
 					for (let i = 0; i < config.notifyChannel.length; i++) {
 						bot.say(config.notifyChannel[i], toSay);
 					}
@@ -99,14 +61,7 @@ export function initIRC() {
 		console.log("IRC Error ".red, message);
 	});
 
-	function capitalizeFirst(string) {
-		if (string.length > 3) {
-			return string.charAt(0).toUpperCase() + string.slice(1);
-		}
-		else {
-			return string.toUpperCase();
-		}
-	}
+	
 
 	async function authorize() {
 		if (config.identify) {
