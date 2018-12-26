@@ -73,9 +73,9 @@ export function getValue(msg) {
 }
 
 export function newTitleTrigger(command, value) {
-	if (command === "title" || command === "episode") {
+	const tempTitle = stats["title"];
+	if (command === "title") {
 		console.log("Resetting everything".yellow);
-		const tempTitle = stats["title"];
 		for (const key in stats) {
 			if (stats.hasOwnProperty(key)) {
 				stats[key] = 0;
@@ -85,15 +85,14 @@ export function newTitleTrigger(command, value) {
 				});
 			}
 		}
-		if (command === "episode") {
-			stats["title"] = tempTitle;
-			stats["episode"] = value;
-			ioInstance.emit("update-stats", {
-				"command": "title",
-				"value": tempTitle
-			});
-
-		}
+	}
+	else if (command === "episode") {
+		stats["title"] = tempTitle;
+		stats["episode"] = value;
+		ioInstance.emit("update-stats", {
+			"command": "title",
+			"value": tempTitle
+		}); 
 	}
 }
 
