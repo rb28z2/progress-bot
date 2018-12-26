@@ -1,5 +1,5 @@
 # progress-bot
-High-tech weaponized moe progress delivery bot for IRC and web. Uses NodeJS and socket.io to update progress from IRC messages onto a web interface. The web interface can also be embedded on another page to provide instant and live progress updates.
+High-tech weaponized moe progress delivery bot for IRC, Discord, and web. Uses NodeJS and socket.io to update progress from IRC/Discord messages onto a web interface. The web interface can also be embedded on another page to provide instant and live progress updates.
 
 # Screenshots
 ![web interface](http://i.imgur.com/nKWdaGL.gif)
@@ -15,7 +15,7 @@ High-tech weaponized moe progress delivery bot for IRC and web. Uses NodeJS and 
 Install `build-essential` and `libicu-dev` via your package manager, then run `npm install` to install the required dependencies. Then, copy `config-default.js` to `config.js` and edit as required. Finally, run the bot with `node irc.js`.
 
 ##### Compatibility
-In theory, this should work anywhere node (and the above dependencies) works. However I've only tested it on Linux (Ubuntu 16.04).
+In theory, this should work anywhere node (and the above dependencies) works. However I've only tested it on Linux (Ubuntu 16.04), and Windows 10.
 
 # Usage
 ##### Available commands and syntax
