@@ -43,12 +43,7 @@ export function initIRC() {
 				let ircMessage = getIRCtoSay(command);
 				let discordMessage = getDiscordtoSay(command);
 				
-				if (ircMessage){
-					for (let i = 0; i < config.notifyChannel.length; i++) {
-						bot.say(config.notifyChannel[i], ircMessage);
-					}
-				}
-
+				ircSay(ircMessage);
 				discordSay(discordMessage);
 			}
 	
