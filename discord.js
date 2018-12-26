@@ -19,7 +19,12 @@ export function initDiscord() {
 	let lastUpdated = exports.lastUpdated;
 
 	client.on("message", msg => {
-		if (triggerMatch(msg.content)) {
+		let authenticated = false;
+		
+		if (config.discordListenChannels.includes(msg.channel.id))
+			authenticated = true;
+
+		if (triggerMatch(msg.content) && authenticated) {
 			const message = getMsg(msg.content);
 			const command = getCommand(message);
 			const value = getValue(message);
