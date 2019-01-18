@@ -50,6 +50,10 @@ export function initDiscord() {
 		}
 	});
 
+	client.on("error", error => {
+		console.log(error);
+	});
+
 	client.login(config.discordKey);
 }
 
