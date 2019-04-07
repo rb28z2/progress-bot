@@ -36,8 +36,8 @@ export function initDiscord() {
 				
 				let discordMessage = getDiscordtoSay(command);
 				let ircMessage = getIRCtoSay(command);
-				discordSay(discordMessage);
-				ircSay(ircMessage);
+				if (config.enableDiscord) discordSay(discordMessage);
+				if (config.enableIrc) ircSay(ircMessage);
 
 
 				io.emit("update-stats", {
@@ -58,8 +58,8 @@ export function initDiscord() {
 }
 
 export function discordSay(message) {
-	config.discordNotifyChannels.forEach(value => {
+	config.discordNotifyChannels.forEach( async value => {
 		let channel = client.channels.get(value);
-		channel.send(message);
+		await channel.send(message);
 	});
 }

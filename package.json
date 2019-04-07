@@ -8,14 +8,14 @@
     "express": "^4.15.2",
     "irc": "^0.5.2",
     "jsonfile": "^5.0.0",
-    "password-prompt": "^1.0.7",
+    "password-prompt": "^1.1.2",
     "socket.io": "^2.0.1"
   },
   "devDependencies": {
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
-    "eslint": "^5.11.0",
-    "nodemon": "^1.18.9"
+    "eslint": "^5.16.0",
+    "nodemon": "^1.18.10"
   }
 }
