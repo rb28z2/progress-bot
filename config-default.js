@@ -32,7 +32,7 @@ const config = {
 	enableDiscord: false,
 	discordKey: "yourkeyhere", // your discord bot token
 	discordNotifyChannels: ["0"], // comma separated numerical notify channel id
-	discordListenChannel: ["0"]
+	discordListenChannels: ["0"]
 };
 
 export default config;
