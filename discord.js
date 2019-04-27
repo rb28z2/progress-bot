@@ -36,8 +36,8 @@ export function initDiscord() {
 				
 				let discordMessage = getDiscordtoSay(command);
 				let ircMessage = getIRCtoSay(command);
-				if (config.enableDiscord) discordSay(discordMessage);
-				if (config.enableIrc) ircSay(ircMessage);
+				if (config.enableDiscord && discordMessage) discordSay(discordMessage);
+				if (config.enableIrc && ircMessage) ircSay(ircMessage);
 
 
 				io.emit("update-stats", {
