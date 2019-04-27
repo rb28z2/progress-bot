@@ -43,8 +43,8 @@ export function initIRC() {
 				let ircMessage = getIRCtoSay(command);
 				let discordMessage = getDiscordtoSay(command);
 				
-				ircSay(ircMessage);
-				discordSay(discordMessage);
+				if (config.enableDiscord && discordMessage) ircSay(ircMessage);
+				if (config.enableIrc && ircMessage) discordSay(discordMessage);
 			}
 	
 			io.emit("update-stats", {
