@@ -1,0 +1,2 @@
+language = "nodejs"
+run = "language = \"nodejs\" run = \"test -f config.js || cp config-default.js config.js && sed -i 's/80/1080/g' config.js && node start.js"

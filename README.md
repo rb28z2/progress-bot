@@ -1,4 +1,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/5245737267d0831fbc1d/maintainability)](https://codeclimate.com/github/rb28z2/progress-bot/maintainability)
+[![Run on Repl.it](https://repl.it/badge/github/rb28z2/progress-bot)](https://repl.it/github/rb28z2/progress-bot)
 
 # progress-bot
 High-tech weaponized moe progress delivery bot for IRC, Discord, and web. Uses NodeJS and socket.io to update progress from IRC/Discord messages onto a web interface. The web interface can also be embedded on another page to provide instant and live progress updates.
