@@ -16,6 +16,6 @@
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "eslint": "^6.7.2",
-    "nodemon": "^1.18.10"
+    "nodemon": "^2.0.2"
   }
 }
