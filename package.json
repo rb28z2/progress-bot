@@ -7,7 +7,7 @@
     "discord.js": "^11.4.2",
     "express": "^4.15.2",
     "irc": "^0.5.2",
-    "jsonfile": "^5.0.0",
+    "jsonfile": "^6.0.1",
     "password-prompt": "^1.1.2",
     "socket.io": "^2.0.1"
   },
