@@ -26,34 +26,34 @@ socket.on("init-stats", function(val) {
 		else if (val["command"] === "qc")
 			dispCommand = "QC";
 
-
-
-		stats[val["command"]] = new ProgressBar.Line("#pb-" + val["command"], {
-			easing: "easeInOut",
-			color: "#287fb8",
-			trailColor: "#555",
-			trailWidth: 1,
-			svgStyle: {
-				width: "100%",
-				height: "50%"
-			},
-			text: {
-				style: {
-					autoStyleContainer: false,
-					color: "#fff",
-					fontFamily: "\"Open Sans\", Helvetica, Arial, sans-serif",
-					fontSize: "3.4vh",
-					position: "absolute",
+		if (!stats[val["command"]]) {
+			stats[val["command"]] = new ProgressBar.Line("#pb-" + val["command"], {
+				easing: "easeInOut",
+				color: "#287fb8",
+				trailColor: "#555",
+				trailWidth: 1,
+				svgStyle: {
 					width: "100%",
-					textAlign: "center",
-					fontWeight: "600",
-					top: "0%"
+					height: "50%"
+				},
+				text: {
+					style: {
+						autoStyleContainer: false,
+						color: "#fff",
+						fontFamily: "\"Open Sans\", Helvetica, Arial, sans-serif",
+						fontSize: "3.4vh",
+						position: "absolute",
+						width: "100%",
+						textAlign: "center",
+						fontWeight: "600",
+						top: "0%"
+					}
+				},
+				step: (state, bar) => {
+					bar.setText(dispCommand + ": " + Math.round(bar.value() * 100) + "%");
 				}
-			},
-			step: (state, bar) => {
-				bar.setText(dispCommand + ": " + Math.round(bar.value() * 100) + "%");
-			}
-		});
+			});
+		}
 		stats[val["command"]].animate(val["value"]);
 	} else {
 		console.log(val["value"]);
