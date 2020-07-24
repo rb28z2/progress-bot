@@ -56,6 +56,13 @@ export function getStats() {
 
 export var file = `${__dirname}/data.json`;
 
+export function saveStats() {
+	jsonFile.writeFileSync(file, getStats());
+	console.log("Saving stats to disk".yellow);
+}
+
+setInterval(saveStats, 1000 * 60 * 10); // save stats every 10 minutes
+
 export function triggerMatch(text) {
 	return text.substring(0, config.trigger.length) === config.trigger;
 }
